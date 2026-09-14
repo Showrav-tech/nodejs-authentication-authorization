@@ -1,6 +1,6 @@
 import {Request,Response} from "express";
 import { registerSchema } from "./auth.schema";
-
+import { User } from "../../models/user.model";
 
 
 export async function registerHandler (req:Request,res:Response){
@@ -14,6 +14,16 @@ message :'Invalid data!',errors:result.error.flatten()
     })
  }
 const {name,email,password}=result.data;
+
+const normalizedEmail = email.toLowerCase().trim();
+
+const existinguser = await User.findOne({email:normalizedEmail});
+if(existinguser){
+    return res.status(409).json({
+        message:"Email is already in use!Please try with a different email",
+    })
+}
+
 
 }catch(err){
 
