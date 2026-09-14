@@ -1,6 +1,7 @@
 import {Request,Response} from "express";
 import { registerSchema } from "./auth.schema";
 import { User } from "../../models/user.model";
+import { hashPassword } from "../../lib/hash";
 
 
 export async function registerHandler (req:Request,res:Response){
@@ -23,7 +24,7 @@ if(existinguser){
         message:"Email is already in use!Please try with a different email",
     })
 }
-
+const passwordHash = await hashPassword(password);
 
 }catch(err){
 
