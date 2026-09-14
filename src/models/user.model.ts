@@ -25,7 +25,7 @@ required:true
         type :String
     },
     twoFactorEnabled:{
-        type :String,
+        type :true,
         default: false
     },
     twoFactorSecret:{

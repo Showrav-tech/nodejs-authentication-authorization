@@ -26,6 +26,20 @@ if(existinguser){
 }
 const passwordHash = await hashPassword(password);
 
+const newlyCreateduser = await User.create({
+ email:normalizedEmail,
+ passwordHash,
+ role:'user',
+ isEmailverified:false,
+ twoFactorEnabled : false
+
+})
+
+
+// Email  verification part
+
+
+
 }catch(err){
 
 }
