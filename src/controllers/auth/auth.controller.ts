@@ -2,6 +2,16 @@ import {Request,Response} from "express";
 import { registerSchema } from "./auth.schema";
 import { User } from "../../models/user.model";
 import { hashPassword } from "../../lib/hash";
+import jwt from 'jsonwebtoken';
+
+
+function getAppUrl(){
+
+return process.env.APP_URL || `http://localhost:${process.env.PORT}`
+
+
+}
+
 
 
 export async function registerHandler (req:Request,res:Response){
@@ -37,6 +47,20 @@ const newlyCreateduser = await User.create({
 
 
 // Email  verification part
+
+const verifyToken = jwt.sign(
+    {
+      sub:newlyCreateduser.id
+    },process.env.JWT_ACCESS_SECRET!,
+    {
+        expiresIn:'1d'
+    }
+)
+
+const verifyUrl = `${getAppUrl()}/auth/verify-email?token=${verifyToken}`
+
+
+
 
 
 
