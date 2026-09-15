@@ -3,7 +3,7 @@ import { registerSchema } from "./auth.schema";
 import { User } from "../../models/user.model";
 import { hashPassword } from "../../lib/hash";
 import jwt from 'jsonwebtoken';
-
+import { sendEmail } from "../../lib/email";
 
 function getAppUrl(){
 
@@ -60,7 +60,14 @@ const verifyToken = jwt.sign(
 const verifyUrl = `${getAppUrl()}/auth/verify-email?token=${verifyToken}`
 
 
-
+await sendEmail(
+  newlyCreateduser.email,
+  "Verify your email",
+  `
+    <p>Please verify your email by clicking the link below.</p>
+    <a href="${verifyUrl}">Verify Email</a>
+  `
+);
 
 
 
