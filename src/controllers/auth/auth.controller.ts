@@ -69,10 +69,25 @@ await sendEmail(
   `
 );
 
+return res.status(201).json({
 
+  message:'User registered',
+  user :{
+
+  id:newlyCreateduser.id,
+    email:newlyCreateduser.email,
+  role:newlyCreateduser.role,
+  isEmailVerified:newlyCreateduser.isEmailverified
+  }
+ 
+
+})
 
 }catch(err){
-
+    console.log(err);
+    return res.status(500).json({
+        message:"Internal server error"
+    })
 }
 
 }
