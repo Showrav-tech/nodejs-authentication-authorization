@@ -6,14 +6,9 @@ import jwt from 'jsonwebtoken';
 import { sendEmail } from "../../lib/email";
 
 function getAppUrl(){
-
 return process.env.APP_URL || `http://localhost:${process.env.PORT}`
 
-
 }
-
-
-
 export async function registerHandler (req:Request,res:Response){
 try{
   const result = registerSchema.safeParse(req.body);
@@ -45,9 +40,7 @@ const newlyCreateduser = await User.create({
 
 })
 
-
 // Email  verification part
-
 const verifyToken = jwt.sign(
     {
       sub:newlyCreateduser.id
@@ -56,9 +49,7 @@ const verifyToken = jwt.sign(
         expiresIn:'1d'
     }
 )
-
 const verifyUrl = `${getAppUrl()}/auth/verify-email?token=${verifyToken}`
-
 
 await sendEmail(
   newlyCreateduser.email,
@@ -89,5 +80,34 @@ return res.status(201).json({
         message:"Internal server error"
     })
 }
+
+}
+
+export async function verifyEmailHandler(req:Request,res:Response){
+const token =req.query.token as string | undefined;
+if(!token){
+  return res.status(400).json({message : 'Verification token is missing'});
+
+}
+try {
+  const payload = jwt.verify(token,process.env.JWT_ACCESS_SECRET!) as{
+    sub:string;
+  }
+  const user=await User.findById(payload.sub);
+
+if(!user){
+  return res.status(400).json({message : 'User not found'});
+
+}
+if(user.isEmailverified){
+  return res.json({message : 'Email is already verified'});
+}
+
+
+} catch (err) {
+  
+}
+
+
 
 }
