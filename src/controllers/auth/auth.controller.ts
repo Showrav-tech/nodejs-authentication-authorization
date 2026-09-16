@@ -1,7 +1,7 @@
 import {Request,Response} from "express";
-import { registerSchema } from "./auth.schema";
+import { loginSchema, registerSchema } from "./auth.schema";
 import { User } from "../../models/user.model";
-import { hashPassword } from "../../lib/hash";
+import { checkPassword, hashPassword } from "../../lib/hash";
 import jwt from 'jsonwebtoken';
 import { sendEmail } from "../../lib/email";
 
@@ -36,7 +36,8 @@ const newlyCreateduser = await User.create({
  passwordHash,
  role:'user',
  isEmailverified:false,
- twoFactorEnabled : false
+ twoFactorEnabled : false,
+ name
 
 })
 
@@ -114,3 +115,43 @@ await user.save();
 
 
 }
+
+export async function loginHandler(req:Request,res:Response){
+
+try {
+  const result = loginSchema.safeParse(req.body);
+ if(!result.success){
+    return res.status(400).json({
+message :'Invalid data!',errors:result.error.flatten()
+
+
+    })
+ }
+const {email,password}=result.data;
+
+const normalizedEmail = email.toLowerCase().trim();
+const user = await User.findOne({email:normalizedEmail});
+if(!user){
+  return res.status(400).json({message : 'Invalid email or password'});
+}
+
+const ok=await checkPassword(password,user.passwordHash);
+  
+if(!ok){
+  return res.status(400).json({message : 'Invalid password'});
+}
+if(!user.isEmailverified){
+  return res.status(403),json({message : 'please verify your email before logged In'});
+}
+
+} catch (err)
+ {
+  
+}
+
+
+}
+
+
+
+
