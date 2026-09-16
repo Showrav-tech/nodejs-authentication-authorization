@@ -103,9 +103,12 @@ if(user.isEmailverified){
   return res.json({message : 'Email is already verified'});
 }
 
-
+user.isEmailverified=true;
+await user.save();
+  return res.json({message : 'Email is now verified! You can login'});
 } catch (err) {
-  
+  console.log(err);
+    return res.status(500).json({message : 'Internal server error'});
 }
 
 
