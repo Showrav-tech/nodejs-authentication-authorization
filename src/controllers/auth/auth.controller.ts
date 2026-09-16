@@ -141,8 +141,10 @@ if(!ok){
   return res.status(400).json({message : 'Invalid password'});
 }
 if(!user.isEmailverified){
-  return res.status(403),json({message : 'please verify your email before logged In'});
+  return res.status(403).json({message : 'please verify your email before logged In'});
+
 }
+
 
 } catch (err)
  {
