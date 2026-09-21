@@ -16,3 +16,9 @@ tokenVersion:number
 
 
     }
+
+    export function createRefreshToken (userId:string,
+        tokenVersion:number
+    ){
+        const payload ={sub:userId,tokenVersion};
+    }

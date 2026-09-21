@@ -15,7 +15,8 @@ required:true
     },
     role :{
         type : String,
-        enum:['user','admin']
+        enum:['user','admin'],
+        default:"user",
     },
     isEmailverified:{
         type:Boolean,

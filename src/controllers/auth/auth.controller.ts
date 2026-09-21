@@ -4,7 +4,7 @@ import { User } from "../../models/user.model";
 import { checkPassword, hashPassword } from "../../lib/hash";
 import jwt from 'jsonwebtoken';
 import { sendEmail } from "../../lib/email";
-
+import { createAccessToken } from "../../lib/jwt";
 function getAppUrl(){
 return process.env.APP_URL || `http://localhost:${process.env.PORT}`
 
@@ -144,6 +144,11 @@ if(!user.isEmailverified){
   return res.status(403).json({message : 'please verify your email before logged In'});
 
 }
+const accessToken =createAccessToken(
+  user.id,
+  user.role,
+  user.tokenVersion
+)
 
 
 } catch (err)
