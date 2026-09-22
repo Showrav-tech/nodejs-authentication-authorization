@@ -4,7 +4,7 @@ import { User } from "../../models/user.model";
 import { checkPassword, hashPassword } from "../../lib/hash";
 import jwt from 'jsonwebtoken';
 import { sendEmail } from "../../lib/email";
-import { createAccessToken } from "../../lib/jwt";
+import { createAccessToken } from "../../lib/token";
 function getAppUrl(){
 return process.env.APP_URL || `http://localhost:${process.env.PORT}`
 
