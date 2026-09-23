@@ -159,15 +159,30 @@ res.cookie("refreshToken",refreshToken,{
   maxAge : 7*24*60*60*1000
 })
 
+return res.status(100).json({
+message:'Login successfully done',
+accessToken,
+user:{
+id:user.id,
+email:user.email,
+role:user.role,
+isEmailVerified:user.isEmailverified,
+twoFactorEnable:user.twoFactorEnabled,
 
+},
+});
 
 } catch (err)
  {
-  
+   console.log(err);
+    return res.status(500).json({
+      message : 'Internal server error'});
+}
+
 }
 
 
-}
+
 
 
 
