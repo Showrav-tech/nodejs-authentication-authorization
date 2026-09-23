@@ -159,7 +159,7 @@ res.cookie("refreshToken",refreshToken,{
   maxAge : 7*24*60*60*1000
 })
 
-return res.status(100).json({
+return res.status(200).json({
 message:'Login successfully done',
 accessToken,
 user:{
