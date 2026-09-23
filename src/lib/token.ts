@@ -21,4 +21,9 @@ tokenVersion:number
         tokenVersion:number
     ){
         const payload ={sub:userId,tokenVersion};
+          return jwt.sign(payload,process.env.JWT_ACCESS_SECRET!,
+
+   {
+    expiresIn:"7d",
+   } );
     }

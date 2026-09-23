@@ -4,7 +4,7 @@ import { User } from "../../models/user.model";
 import { checkPassword, hashPassword } from "../../lib/hash";
 import jwt from 'jsonwebtoken';
 import { sendEmail } from "../../lib/email";
-import { createAccessToken } from "../../lib/token";
+import { createAccessToken, createRefreshToken } from "../../lib/token";
 function getAppUrl(){
 return process.env.APP_URL || `http://localhost:${process.env.PORT}`
 
@@ -149,6 +149,16 @@ const accessToken =createAccessToken(
   user.role,
   user.tokenVersion
 )
+
+const refreshToken = createRefreshToken(user.id,user.tokenVersion);
+const isProd=process.env.NODE_ENV==='production';
+res.cookie("refreshToken",refreshToken,{
+  httpOnly:true,
+  secure:isProd,
+  sameSite:'lax',
+  maxAge : 7*24*60*60*1000
+})
+
 
 
 } catch (err)
