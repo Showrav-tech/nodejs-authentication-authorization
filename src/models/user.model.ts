@@ -1,53 +1,63 @@
-import {Schema, model} from 'mongoose'
+import { Schema, model } from "mongoose";
 
-const userSchema = new Schema({
-    email :{
-        type : String ,
-        required : true,
-        unique : true,
-        lowercase:true,
-        trim: true
+const userSchema = new Schema(
+    {
+        email: {
+            type: String,
+            required: true,
+            unique: true,
+            lowercase: true,
+            trim: true
+        },
 
-    },
-    passwordHash:{
-type : String,
-required:true
-    },
-    role :{
-        type : String,
-        enum:['user','admin'],
-        default:"user",
-    },
-    isEmailverified:{
-        type:Boolean,
-        default:false
-    },
-    name:{
-        type :String
-    },
-    twoFactorEnabled:{
-        type :true,
-        default: false
-    },
-    twoFactorSecret:{
-        type : String,
-        default : undefined
-    },
-    tokenVersion :{
-        type:Number,
-        default:0
-    },
-resetPasswordToken:{
-type :String,
-default:undefined
+        passwordHash: {
+            type: String,
+            required: true
+        },
 
-},
-resetPasswordExpires :{
-    type : Date,
-    default:undefined
-}
+        role: {
+            type: String,
+            enum: ["user", "admin"],
+            default: "user"
+        },
 
-},{
-timestamps : true
-});
+        isEmailverified: {
+            type: Boolean,
+            default: false
+        },
+
+        name: {
+            type: String
+        },
+
+        twoFactorEnabled: {
+            type: Boolean,
+            default: false
+        },
+
+        twoFactorSecret: {
+            type: String,
+            default: undefined
+        },
+
+        tokenVersion: {
+            type: Number,
+            default: 0
+        },
+
+        resetPasswordToken: {
+            type: String,
+            default: undefined
+        },
+
+        resetPasswordExpires: {
+            type: Date,
+            default: undefined
+        }
+    },
+    {
+        timestamps: true
+    }
+);
+
 export const User = model("User", userSchema);
