@@ -182,7 +182,21 @@ twoFactorEnable:user.twoFactorEnabled,
 }
 
 
+export async function refreshHandler(req:Request , res:Response){
+  try{
+const token =req.cookies?.refreshToken as string | undefined;
+if(!token){
+  return res.status(401).json({message:'Refresh token missing'});
+}
+  }
+  catch(err){
+    console.log(err);
+    return res.status(500).json({
+      message:"Internal server error",
+    })
 
+  }
+}
 
 
 
